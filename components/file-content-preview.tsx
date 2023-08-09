@@ -1,3 +1,4 @@
+import matter from "gray-matter";
 import { useEffect, useState } from "react";
 
 type Props = { handle: FileSystemFileHandle; className?: string };
@@ -9,7 +10,8 @@ export function FileContentPreview({ handle, className }: Props) {
     (async () => {
       const file = await handle.getFile();
       const fileContents = await file.text();
-      setContents(fileContents);
+      const { data } = matter(fileContents);
+      setContents(JSON.stringify(data, null, 2));
     })();
   }, [handle]);
 
