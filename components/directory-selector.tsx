@@ -4,11 +4,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "./ui/button";
 
 type Props = {
-  setDir: Dispatch<SetStateAction<FileSystemDirectoryHandle | undefined>>;
-  setFiles: Dispatch<SetStateAction<FileSystemFileHandle[]>>;
+  setDirHandle: Dispatch<SetStateAction<FileSystemDirectoryHandle | undefined>>;
 };
 
-export function DirectorySelector({ setDir, setFiles }: Props) {
+export function DirectorySelector({ setDirHandle }: Props) {
   const [err, setErr] = useState<boolean>();
 
   return (
@@ -16,17 +15,7 @@ export function DirectorySelector({ setDir, setFiles }: Props) {
       <Button
         onClick={async () => {
           try {
-            const handle = await window.showDirectoryPicker();
-            setDir(handle);
-
-            const files = [];
-            for await (const entry of handle.values()) {
-              if (entry.kind === "file") {
-                files.push(entry);
-              }
-            }
-
-            setFiles(files);
+            setDirHandle(await window.showDirectoryPicker());
             setErr(false);
           } catch {
             setErr(true);
