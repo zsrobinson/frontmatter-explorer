@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FileContentPreview } from "~/components/file-content-preview";
 import { Button } from "~/components/ui/button";
 
 export default function Page() {
@@ -47,7 +48,12 @@ export default function Page() {
 
           <ul className="ml-4 list-inside list-disc flex-col">
             {files.map((file) => (
-              <li key={file.name}>{file.name}</li>
+              <li key={file.name}>
+                <div className="inline-flex flex-col gap-2 pb-4">
+                  {file.name}
+                  <FileContentPreview handle={file} />
+                </div>
+              </li>
             ))}
           </ul>
         </div>
