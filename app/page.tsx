@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DirectorySelector } from "~/components/directory-selector";
+import { TableData, TableHead, TableHeader } from "~/components/table";
 import { ParsedFile, parseFile } from "~/lib/parse-file";
 
 export default function Page() {
@@ -38,21 +39,25 @@ export default function Page() {
       {dirHandle ? (
         <div className="flex flex-col gap-2">
           <p>Folder: {dirHandle.name}</p>
-          <p>Files: {parsedFiles.length}</p>
-          <p>Columns: {JSON.stringify(columns)}</p>
 
-          <ul className="ml-4 list-inside list-disc flex-col">
-            {parsedFiles.map((file) => (
-              <li key={file.name}>
-                <div className="inline-flex flex-col gap-2">
-                  {file.name}
-                  {/* <div className="mb-4 whitespace-pre rounded-lg bg-secondary p-4 font-mono text-xs">
-                    {JSON.stringify(file.data, null, 2)}
-                  </div> */}
-                </div>
-              </li>
-            ))}
-          </ul>
+          <table className="table-auto">
+            <TableHead>
+              <TableHeader>file-name</TableHeader>
+              {columns.map((column) => (
+                <TableHeader key={column}>{column}</TableHeader>
+              ))}
+            </TableHead>
+            <tbody>
+              {parsedFiles.map((file) => (
+                <tr key={file.name}>
+                  <TableData data={file.name} />
+                  {columns.map((column) => (
+                    <TableData data={file.data[column]} key={column} />
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <DirectorySelector setDirHandle={setDirHandle} />
