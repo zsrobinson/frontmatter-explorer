@@ -4,7 +4,6 @@ export type ParsedFile = {
   data: { [key: string]: any };
   content: string;
   name: string;
-  type: string;
 };
 
 export async function parseFile(handle: FileSystemFileHandle) {
@@ -17,6 +16,5 @@ export async function parseFile(handle: FileSystemFileHandle) {
     data,
     content,
     name: handle.name,
-    type: file.type,
   };
 }

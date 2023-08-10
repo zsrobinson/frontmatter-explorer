@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DirectorySelector } from "~/components/directory-selector";
+import { DownloadJSONButton } from "~/components/download-json-button";
+import { SelectorButton } from "~/components/selector-button";
 import { TableData, TableHead, TableHeader } from "~/components/table";
+import { Button } from "~/components/ui/button";
 import { ParsedFile, parseFile } from "~/lib/parse-file";
 
 export default function Page() {
@@ -35,8 +37,19 @@ export default function Page() {
   }, [dirHandle]);
 
   return (
-    <main className="flex flex-grow flex-col gap-4">
-      {dirHandle ? (
+    <main className="flex flex-grow flex-col items-start gap-4">
+      <div className="flex gap-4">
+        <SelectorButton
+          setDirHandle={setDirHandle}
+          variant={dirHandle ? "secondary" : "default"}
+        />
+
+        {dirHandle && (
+          <DownloadJSONButton parsedFiles={parsedFiles} variant="outline" />
+        )}
+      </div>
+
+      {dirHandle && (
         <div className="flex flex-col gap-2">
           <p>Folder: {dirHandle.name}</p>
 
@@ -59,8 +72,6 @@ export default function Page() {
             </tbody>
           </table>
         </div>
-      ) : (
-        <DirectorySelector setDirHandle={setDirHandle} />
       )}
     </main>
   );
