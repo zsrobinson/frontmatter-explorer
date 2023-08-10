@@ -1,34 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontmatter Explorer
 
-## Getting Started
+<center><i>insert screenshot here eventually</i></center>
 
-First, run the development server:
+## About this project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+I was really torn between [Notion](https://www.notion.so/) and [Obsidian](https://obsidian.md/) when trying to pick a notes app going into college. I think that Notion [databases](https://www.notion.so/help/intro-to-databases) are really neat, but I ultimately went with Obsidian because it's all just markdown files stored locally on your own computer. But what if I want a similar experience to Notion databases for Obsidian? Markdown files are able to store data using [YAML Frontmatter](https://daily-dev-tips.com/posts/what-exactly-is-frontmatter/), but the only way to query all of this data is the [Dataview plugin](https://github.com/blacksmithgu/obsidian-dataview) for Obsidian. Don't get me wrong, the Dataview plugin is really cool -- but it's not exactly what I think of when I think of Notion databases. After finding out about the new-ish [File System Access API](https://developer.chrome.com/articles/file-system-access/), I figured that I'd give it a shot.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This tool assumes that all of the markdown files within a directory are of the same "schema", which means that their frontmatter roughly follows the same shape. It will go through each file in the directory that you select and parse the frontmatter, looking for unique data fields. THen, it will display all of this data in a table.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is very much a work in progress. Creating editable tables doesn't seem very easy, so it might take a little bit to get this working how I expect it to.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+As I mentioned, this project relies on the File System Access API which is [not yet fully implemented in all major browsers](https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker#browser_compatibility) (just Chromium-based browsers as of writing). I started this project more or less as an excuse to get to experiment with this new API which seemed really promising. It's worth mentioning that all of the processing that this website does happens locally in your own browser. At no point does this website send your files to any remote source. You're welcome to verify this by browsing the source code and/or cloning this repo and hosting the project locally to _really_ be sure.
 
-## Learn More
+## How to run this tool locally
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+First, make sure you have node package manager (NPM) installed on your system. After cloning this repo, run `npm install` and `npm run dev` in the root of the project. Navigate to `http://localhost:3000` in your browser, and use the site just as you would the public version.
