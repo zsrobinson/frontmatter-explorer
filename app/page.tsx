@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { DownloadJSONButton } from "~/components/download-json-button";
 import { SelectorButton } from "~/components/selector-button";
 import { TableData, TableHead, TableHeader } from "~/components/table";
-import { Button } from "~/components/ui/button";
 import { ParsedFile, parseFile } from "~/lib/parse-file";
 
 export default function Page() {
   const [dirHandle, setDirHandle] = useState<FileSystemDirectoryHandle>();
   const [parsedFiles, setParsedFiles] = useState<ParsedFile[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
+
+  const disabled = window && !window.showDirectoryPicker;
 
   useEffect(() => {
     if (!dirHandle) return;
@@ -42,6 +43,7 @@ export default function Page() {
         <SelectorButton
           setDirHandle={setDirHandle}
           variant={dirHandle ? "secondary" : "default"}
+          disabled={disabled}
         />
 
         {dirHandle && (
@@ -72,6 +74,21 @@ export default function Page() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {disabled && (
+        <p>
+          Please use a browser that supports the File System Access API. Refer
+          to{" "}
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker#browser_compatibility"
+            className="underline underline-offset-2 transition-colors hover:text-primary/80"
+            target="_blank"
+          >
+            this list
+          </a>{" "}
+          for browsers that are supported.
+        </p>
       )}
     </main>
   );
