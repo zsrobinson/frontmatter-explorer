@@ -11,7 +11,8 @@ export default function Page() {
   const [parsedFiles, setParsedFiles] = useState<ParsedFile[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
 
-  const disabled = window && !window.showDirectoryPicker;
+  const unsupported =
+    typeof window !== "undefined" && !window.showDirectoryPicker;
 
   useEffect(() => {
     if (!dirHandle) return;
@@ -43,7 +44,7 @@ export default function Page() {
         <SelectorButton
           setDirHandle={setDirHandle}
           variant={dirHandle ? "secondary" : "default"}
-          disabled={disabled}
+          disabled={unsupported}
         />
 
         {dirHandle && (
@@ -76,7 +77,7 @@ export default function Page() {
         </div>
       )}
 
-      {disabled && (
+      {unsupported && (
         <p>
           Please use a browser that supports the File System Access API. Refer
           to{" "}
