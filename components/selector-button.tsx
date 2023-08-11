@@ -13,9 +13,7 @@ export function SelectorButton({ setDirHandle, ...rest }: Props) {
       onClick={async () => {
         try {
           setDirHandle(await window.showDirectoryPicker());
-        } catch {
-          console.error("User cancelled directory selection");
-        }
+        } catch {}
       }}
       {...rest}
     >

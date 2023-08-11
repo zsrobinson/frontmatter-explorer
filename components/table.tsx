@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 import type { ParsedFile } from "~/lib/parse-file";
 
 type LayoutProps = { children: ReactNode };
@@ -8,7 +8,7 @@ type LayoutProps = { children: ReactNode };
 type TableDataProps = { data: ParsedFile["data"][string] };
 
 export function TableData({ data }: TableDataProps) {
-  const className = "px-2 py-1 whitespace-pre";
+  const className = "px-3 py-1 whitespace-pre";
 
   if (data === undefined || (Array.isArray(data) && data.length === 0)) {
     return <td className={className + " italic text-secondary"}>&ndash;</td>;
@@ -39,9 +39,16 @@ export function TableData({ data }: TableDataProps) {
   return <td className={className}>{JSON.stringify(data, null, 2)}</td>;
 }
 
-export function TableHeader({ children }: LayoutProps) {
+type TableHeaderProps = {
+  children: ReactNode;
+} & ComponentPropsWithoutRef<"th">;
+
+export function TableHeader({ children, ...rest }: TableHeaderProps) {
   return (
-    <th className="bg-secondary px-2 py-1 text-left first:rounded-l-lg last:rounded-r-lg">
+    <th
+      className="bg-secondary px-3 py-1 first:rounded-l-lg last:rounded-r-lg"
+      {...rest}
+    >
       {children}
     </th>
   );

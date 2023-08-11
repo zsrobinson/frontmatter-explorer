@@ -1,10 +1,12 @@
 "use client";
 
+import { IconArrowDown } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { DownloadJSONButton } from "~/components/download-json-button";
+import { DownloadJSONButton } from "~/components/download-button";
 import { SelectorButton } from "~/components/selector-button";
 import { TableData, TableHead, TableHeader } from "~/components/table";
 import { ParsedFile, parseFile } from "~/lib/parse-file";
+import { kebabToSentence } from "~/lib/utils";
 
 export default function Page() {
   const [dirHandle, setDirHandle] = useState<FileSystemDirectoryHandle>();
@@ -20,10 +22,12 @@ export default function Page() {
     (async () => {
       const files: ParsedFile[] = [];
       for await (const entry of dirHandle.values()) {
-        if (entry.kind === "file") {
-          files.push(await parseFile(entry));
-        }
+        if (entry.kind !== "file") continue;
+        if (entry.name.startsWith(".")) continue;
+        files.push(await parseFile(entry));
       }
+
+      files.sort((a, b) => a.name.localeCompare(b.name));
 
       const dataKeys = new Set<string>();
       for (const file of files) {
@@ -48,7 +52,7 @@ export default function Page() {
         />
 
         {dirHandle && (
-          <DownloadJSONButton parsedFiles={parsedFiles} variant="outline" />
+          <DownloadJSONButton files={parsedFiles} variant="outline" />
         )}
       </div>
 
@@ -58,11 +62,18 @@ export default function Page() {
 
           <table className="table-auto">
             <TableHead>
-              <TableHeader>file-name</TableHeader>
+              <TableHeader title="file-name">
+                File Name
+                <IconArrowDown size={18} className="mb-[3px] ml-1 inline" />
+              </TableHeader>
+
               {columns.map((column) => (
-                <TableHeader key={column}>{column}</TableHeader>
+                <TableHeader key={column} title={column}>
+                  {kebabToSentence(column)}
+                </TableHeader>
               ))}
             </TableHead>
+
             <tbody>
               {parsedFiles.map((file) => (
                 <tr key={file.name}>
